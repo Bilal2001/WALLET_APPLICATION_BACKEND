@@ -29,7 +29,7 @@ async def get_users(
 ) -> User:
     user = session.exec(select(User).where(User.id == user_id)).first()
     if user is None:
-        raise HTTPException(staus_code = 404, detail = "User not Found")
+        raise HTTPException(status_code = 404, detail = "User not Found")
     return user
 
 @app.put("/{user_id}", status_code=status.HTTP_202_ACCEPTED)
@@ -40,7 +40,7 @@ async def update_details_of_user(
 ) -> User:
     user_to_update = session.exec(select(User).where(User.id == user_id)).first()
     if user_to_update is None:
-        raise HTTPException(staus_code = 404, detail = "User not Found")
+        raise HTTPException(status_code = 404, detail = "User not Found")
 
     if len(user_data.name): user_to_update.name = user_data.name
     if len(user_data.email): user_to_update.email = user_data.email
