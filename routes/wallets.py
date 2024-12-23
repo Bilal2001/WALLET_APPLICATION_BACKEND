@@ -1,5 +1,6 @@
 from datetime import datetime
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, status, Depends
+from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
 from database import get_session
 from models import CreateWallet, Wallet, User, CreateTransaction, Transaction, TransactionTypeEnum
@@ -21,12 +22,12 @@ async def create_wallet(
     #* Check if user with user_id exists
     user_data = session.exec(select(User).where(User.id == wallet_data.user_id)).first()
     if user_data is None:
-        raise HTTPException(status_code=404, detail="User not found")
+        return JSONResponse(status_code=404, content={"detail": "User not found"})
     
     #* Check if wallet for user id exists (single wallet)
     wallet_instance = session.exec(select(Wallet).where(Wallet.user_id == wallet_data.user_id)).first()
     if wallet_instance is not None:
-        raise HTTPException(status_code=404, detail="Wallet for user already exists")
+        return JSONResponse(status_code=404, content={"detail": "Wallet for user already exists"})
     
     wallet = Wallet(
         user_id=wallet_data.user_id,
@@ -46,12 +47,12 @@ async def perform_transaction(
     #* Check if wallet exists
     wallet = session.exec(select(Wallet).where(Wallet.id == wallet_id)).first()
     if wallet is None:
-        raise HTTPException(status_code=404, detail="Wallet not found")
+        return JSONResponse(status_code=404, content={"detail": "Wallet not found"})
     
     #* Check if amount can be debited
     if transaction_data.transaction_type.value == "debit" and \
         wallet.balance < transaction_data.amount:
-        raise HTTPException(status_code=404, detail="Wallet has insufficient balance")
+        return JSONResponse(status_code=404, content={"detail": "Wallet has insufficient balance"})
 
     #* Set Description
     default_description = f"{transaction_data.transaction_type.value.capitalize()}ing {transaction_data.amount}"
@@ -84,7 +85,7 @@ async def get_wallet_balance(
     #* Check if wallet exists
     wallet = session.exec(select(Wallet).where(Wallet.id == wallet_id)).first()
     if wallet is None:
-        raise HTTPException(status_code=404, detail="Wallet not found")
+        return JSONResponse(status_code=404, content={"detail": "Wallet not found"})
     
     return wallet
 
@@ -98,11 +99,11 @@ async def get_wallet_transactions(
     #* Check if wallet exists
     wallet = session.exec(select(Wallet).where(Wallet.id == wallet_id)).first()
     if wallet is None:
-        raise HTTPException(status_code=404, detail="Wallet not found")
+        return JSONResponse(status_code=404, content={"detail": "Wallet not found"})
     
     #* Validate pagination arguments
     if page_number < 1 or per_page < 1:
-        raise HTTPException(status_code=404, detail="Invalid Pagination Arguments")
+        return JSONResponse(status_code=404, content={"detail": "Invalid Pagination Arguments"})
     
     limit = per_page
     offset = (page_number - 1) * per_page
