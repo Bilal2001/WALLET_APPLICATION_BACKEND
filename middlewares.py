@@ -21,7 +21,7 @@ class AuthentictionMiddleware(BaseHTTPMiddleware):
         self.rate_limit_time: Dict[str, float] = {}
 
     async def dispatch(self, request: Request, call_next):
-        if request.url.path in ["/docs", "/openapi.json", "/token/new-token"]:
+        if request.url.path in ["/docs", "/openapi.json", "/token/new-token", "/token/new-test-token"]:
             return await call_next(request)
         
         auth_header = request.headers.get("Authorization")
