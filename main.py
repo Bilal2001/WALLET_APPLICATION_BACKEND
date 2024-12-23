@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi.responses import JSONResponse
 from routes import UserRoute, WalletRoute, TokenRoute
 from database import init_db
-from middlewares import AuthentictionMiddleware, RateLimitterMiddleware
+from middlewares import AuthentictionMiddleware
 
 
 
@@ -25,4 +25,3 @@ app.include_router(TokenRoute)
 
 #* MIDDLEWARES
 app.add_middleware(AuthentictionMiddleware)
-app.add_middleware(RateLimitterMiddleware)
