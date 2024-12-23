@@ -17,5 +17,5 @@ async def create_jwt_token():
 @app.get("/new-test-token")
 async def create_jwt_token():
     payload = {}
-    payload["exp"] = datetime.now() + timedelta(seconds=10)  # Token expires in 1 hour
+    payload["exp"] = datetime.now() + timedelta(seconds=2)  # Token expires in 1 hour
     return JSONResponse(status_code=200, content={"token" : jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)})
