@@ -1,0 +1,9 @@
+fastapi
+pytest
+pthon-dotenv
+sqlmodel
+uvicorn
+pyjwt
+httpx
+phonenumbers
+email-validator
