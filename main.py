@@ -1,20 +1,10 @@
-from fastapi import FastAPI, HTTPException, Request
-from contextlib import asynccontextmanager
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from routes import UserRoute, WalletRoute, TokenRoute
-from database import init_db
 from middlewares import AuthentictionMiddleware
 
 
-
-#* INIT DB
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    init_db()
-    yield
-
 #* APP
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 #* Routers
 app.include_router(UserRoute)
