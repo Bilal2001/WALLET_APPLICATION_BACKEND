@@ -7,68 +7,37 @@ The **Wallet Application Backend** is a FastAPI-based backend application for ma
 
 ## Routes Explanation
 
-### **Authentication Routes**
+### **Users Routes**
+Base Path: `/users`
 
-#### `POST /login`
-- **Description**: Authenticates the user and provides a JWT token.
-- **Request Body**:
-  ```json
-  {
-      "username": "string",
-      "password": "string"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-      "access_token": "string",
-      "token_type": "bearer"
-  }
-  ```
-
-#### `GET /protected`
-- **Description**: A protected route accessible only with a valid JWT token.
-- **Headers**:
-  ```
-  Authorization: Bearer <token>
-  ```
-- **Response**:
-  ```json
-  {
-      "message": "Access granted",
-      "user": "string"
-  }
-  ```
+| HTTP Method | Endpoint         | Description                                   |
+|-------------|------------------|-----------------------------------------------|
+| `POST`      | `/`              | Create a new user.                           |
+| `GET`       | `/{user_id}`     | Retrieve details of a specific user by ID.   |
+| `PUT`       | `/{user_id}`     | Update details of a specific user by ID.     |
+| `GET`       | `/`              | Retrieve a list of all users.                |
 
 ---
 
 ### **Wallet Routes**
+Base Path: `/wallets`
 
-#### `POST /wallet/transaction`
-- **Description**: Processes a credit or debit transaction.
-- **Request Body**:
-  ```json
-  {
-      "transaction_type": "credit | debit",
-      "amount": "float"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-      "message": "Transaction successful",
-      "new_balance": "float"
-  }
-  ```
+| HTTP Method | Endpoint                     | Description                                   |
+|-------------|------------------------------|-----------------------------------------------|
+| `POST`      | `/`                          | Create a new wallet.                          |
+| `POST`      | `/{wallet_id}/transactions`  | Create a transaction using wallet ID.         |
+| `GET`       | `/{wallet_id}/balance`       | Get the wallet balance using wallet ID.       |
+| `GET`       | `/{wallet_id}/transactions`  | Retrieve a list of all transactions of a wallet. |
 
-#### `GET /wallet/balance`
-- **Description**: Fetches the current wallet balance.
-- **Response**:
-  ```json
-  {
-      "balance": "float"
-  }
-  ```
+---
+
+### **Tokens Routes**
+Base Path: `/token`
+
+| HTTP Method | Endpoint                     | Description                                   |
+|-------------|------------------------------|-----------------------------------------------|
+| `GET`       | `/new-token`                 | Get actual token for using .                |
+| `GET`       | `/new-test-token`            | Get actual token for testing using pytest.  |
 
 ---
 
