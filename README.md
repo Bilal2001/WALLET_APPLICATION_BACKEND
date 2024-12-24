@@ -108,7 +108,11 @@ Base Path: `/token`
    ```bash
    alembic upgrade head
    ```
-5. Start the application:
+5. Create a .env file in the root dir:
+   ```bash
+   echo -e 'SECRET_KEY="YOUR_VERY_SECRET_KEY"\nALGORITHM="HS256"\n\nRATELIMIT_PER_MINUTE=10' > .env
+   ```
+7. Start the application:
    ```bash
    uvicorn main:app --reload
    ```
